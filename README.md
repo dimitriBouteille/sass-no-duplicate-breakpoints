@@ -104,5 +104,3 @@ Si un point de rupture n'existe pas, une erreur est levée.
 
     Permet de récupération de la clef `query` d'un point de rupture. Si le point de rupture n'existe pas, une erreur est lévée.
     
-### Licence
-
