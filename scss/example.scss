@@ -1,30 +1,31 @@
 
+// Import du plugin
 @import "responsive/import";
 
-// Utilisation de base avec une liste proprietes
+// Utilisation de base avec une liste propriétés
 .foo{
   color: red;
 
-  @include respond-to(my-breakpoint, (
+  @include respond-to(sm, (
     color: blue,
   ));
 
   &-sub {
 
-    @include respond-to(my-breakpoint, (
+    @include respond-to(sm, (
       background-color: green,
     ))
   }
 
   .sub-selector {
-    @include respond-to(my-breakpoint, (
+    @include respond-to(sm, (
           background-color: orange,
     ))
   }
 
 }
 .hello {
-  @include respond-to(my-breakpoint, (
+  @include respond-to(sm, (
       background: red,
   ));
 }
@@ -34,7 +35,7 @@
 
   color: pink;
 
-  @include respond-to(my-breakpoint){
+  @include respond-to(sm){
     color: white;
     font-size: 16px;
   }

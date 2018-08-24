@@ -24,7 +24,16 @@
 ///             ...
 ///     );
 $__responsiveQuery : (
-        my-breakpoint : (
-                query : 'screen and (max-width: 768px)',
+        xs : (
+                query: '(min-width: 768px)',
+        ),
+        sm : (
+                query : '(min-width: 768px)',
+        ),
+        md : (
+                query : '(min-width: 992px)',
+        ),
+        lg : (
+                query : '(min-width: 1200px)',
         )
 ) !default;
