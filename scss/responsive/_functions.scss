@@ -1,0 +1,100 @@
+
+/// Vérifie si la variable qui stocke l'ensemble de la configuration des medias query existe.
+/// Si la variable n'existe pas, une erreur est générée.
+/// @group Responsive
+/// @access private
+/// @return {boolean}
+@function __varResponsiveExit() {
+
+  @if variable-exists(__responsiveQuery){
+    @return true;
+  }
+
+  @error "Sorry, the variable '$__responsiveQuery' not exist.";
+  @return false;
+}
+
+
+/// Vérifie si un point de rupture existe dans la configuration des medias query.
+/// Si le point de rupture n'existe pas, une erreur est générée.
+/// @group Responsive
+/// @param {string} $breakpoint Point de rupture
+/// @access private
+/// @return {boolean}
+@function __breakpointExist($breakpoint) {
+
+  @if __varResponsiveExit(){
+
+    $keyMap: map-get($__responsiveQuery, $breakpoint);
+    @if $keyMap != null {
+
+      @return true;
+    }
+
+    @error "Sorry, the '#{$breakpoint}' breakpoint no exist in '$__responsiveQuery'. Please make sure it is defined in '$__responsiveQuery' map.";
+    @return false;
+  }
+}
+
+
+/// Retourne la configuration d'un point de rupture (query et selecteur).
+/// Si le point de rupture n'existe pas, la fonction retourne null.
+/// @group Responsive
+/// @param {string} $breakpoint Point de rupture
+/// @access private
+/// @return {map|null}
+@function __getBreakpointData($breakpoint) {
+
+  @if __breakpointExist($breakpoint){
+
+    @return map-get($__responsiveQuery, $breakpoint);
+  }
+
+  @return null;
+}
+
+
+/// Retourne la clef query (pour le @media) d'un point de rupture.
+/// Si le point de rupture n'existe pas, la fonction retourne null.
+/// @group Responsive
+/// @param {string} $breakpoint Point de rupture
+/// @access public
+/// @return {map|null}
+@function getBreakpointQuery($breakpoint) {
+
+  $config : __getBreakpointData($breakpoint);
+  @if $config != null {
+
+    @return map-get($config, query);
+  }
+
+  @return null;
+}
+
+
+/// Met à jour un tableau de sélecteur
+/// @group Responsive
+/// @param {map} $currentSelectors Tableau des sélecteurs dans lequel on souhaite ajouter un nouveau sélecteur
+/// @param {string} $selector Sélecteur css
+/// @param {map} $propertys Liste des propriétés liées au sélecteur
+/// @access private
+/// @return {map}
+@function __updateSelector($currentSelectors, $selector, $propertys) {
+
+  $returnSelectors : ();
+  $returnSelectors : map-merge($currentSelectors, ($selector : $propertys));
+
+  @return $returnSelectors;
+}
+
+
+/// @group Responsive
+/// @param {string} $breakpoint Point de rupture
+/// @access private
+/// @return {boolean}
+@function __updateMedia($breakpoint, $mediaDatas) {
+
+  $__responsiveQuery : map-merge($__responsiveQuery, ($breakpoint: $mediaDatas)) !global;
+
+  @return true;
+}

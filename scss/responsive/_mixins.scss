@@ -1,0 +1,109 @@
+
+/// Ajoutes des propriétés à un point de rupture.
+/// Cette mixin regroupe l'ensemble des sélecteurs dans un seul point de rupture si le paramètre $propertys est passé en paramètre
+/// Si @content est renseigné, un nouveau @media sera généré dans la feuille
+/// @group Responsive
+/// @param {string} $breakpoint Point de rupture
+/// @param {map} $propertys [null] Liste des proprietes
+/// @example scss - Utilisation basique
+/// .foo {
+///   color: red;
+///   @include respondTo(mobile, (
+///     color: yellow,
+///   ));
+/// }
+/// @example scss - Utilisation en passent directement le contenu dans la mixin
+/// .foo {
+///   color: red;
+///   @include respondTo(mobile) {
+///     color: yellow,
+///     background-color: white,
+///     font-size: 15px,
+///   };
+/// }
+/// /!\ Si un même selector possède plusieurs fois le même point de rupture, seule le dernier point de rupture sera conservé
+/// .foo {
+///   color: red;
+///   @include respondTo(mobile, (
+///     color: yellow,
+///     font-size: 15px
+///   ));
+///
+///   /!\ Seul ce media sera généré avec la propriété position.
+///   @include respondTo(mobile, (
+///     position: relative,
+///   ));
+/// }
+@mixin respond-to($breakpoint, $propertys : null) {
+
+  @if __breakpointExist($breakpoint){
+
+    @if $propertys == null { // @content selectors
+
+      $query : getBreakpointQuery($breakpoint);
+
+      // Genere le media
+      @media #{$query} {
+        @content;
+      }
+
+    } @else { // Propertys lists
+
+      $selector : &;
+      $breakpointData : __getBreakpointData($breakpoint);
+
+      @if map-has-key($breakpointData, selectors) == false {
+        $breakpointData : map-merge($breakpointData, (selectors : ()));
+      }
+
+      $newSelectors : __updateSelector(map-get($breakpointData, selectors), $selector, $propertys);
+      $breakpointData : map-merge($breakpointData, (selectors : $newSelectors));
+
+      $update : __updateMedia($breakpoint, $breakpointData);
+    }
+  }
+}
+
+
+/// Charge le contenu des media query.
+/// Si $breakpoints est null, alors l'ensemble des medias seront chargés sinon les medias spécifiés seront chargés
+/// @group Responsive
+/// @param {map} $breakpoints [()] Liste des points de rupture à charger
+/// @example scss - Utilisation pour charger l'ensemble des medias
+///   @include loadMediaQuery();
+/// @example scss - Utilisation pour charger des medias précis
+///   @include loadMediaQuery(media1, media2, media3);
+@mixin loadMediaQuery($breakpoints...) {
+
+  @if length($breakpoints) > 0 { // Vérification de l'existance des breakpoints
+    @each $breakpoint in $breakpoints {
+      $test : __breakpointExist($breakpoint);
+    }
+  }
+
+  @each $breakpointName, $breakpoint in $__responsiveQuery {
+
+    @if (length($breakpoints) == 0) or ((length($breakpoints) > 0) and index($breakpoints, $breakpointName) != null){
+
+      $query : getBreakpointQuery($breakpointName);
+
+      // Génération du media
+      @media #{$query} {
+        @each $selectors, $propertys in map-get($breakpoint, selectors) {
+
+          @if $selectors != null { // Si le breakpoint contient >= 1 selecteur
+
+            // Création du selecteur
+            #{$selectors} {
+              @each $propertyName, $propertyValue in $propertys {
+
+                // Generation de la propriété
+                #{$propertyName} : #{$propertyValue};
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

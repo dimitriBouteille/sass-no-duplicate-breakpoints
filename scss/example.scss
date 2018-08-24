@@ -1,0 +1,44 @@
+
+@import "responsive/import";
+
+// Utilisation de base avec une liste proprietes
+.foo{
+  color: red;
+
+  @include respond-to(my-breakpoint, (
+    color: blue,
+  ));
+
+  &-sub {
+
+    @include respond-to(my-breakpoint, (
+      background-color: green,
+    ))
+  }
+
+  .sub-selector {
+    @include respond-to(my-breakpoint, (
+          background-color: orange,
+    ))
+  }
+
+}
+.hello {
+  @include respond-to(my-breakpoint, (
+      background: red,
+  ));
+}
+
+// Utilisation avec @content
+.bar {
+
+  color: pink;
+
+  @include respond-to(my-breakpoint){
+    color: white;
+    font-size: 16px;
+  }
+}
+
+// Chargement des points de ruptures
+@include loadMediaQuery();

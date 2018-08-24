@@ -1,0 +1,30 @@
+
+/// Variable qui stocke les sélecteurs pour chaque media
+/// /!\ Si loadMediaQuery n'a aucun paramètre, les points de rupture seront générés dans l'ordre de cette variable
+/// @prop {map} $__responsiveQuery [()] Liste des points de rupture pour le responsive
+/// Key : Nom du point de rupture
+///    query : media query
+///    selectors : Liste des sélecteurs avec les propriétés (cette clef est ajoutée automatiquement au tableau)
+/// @group Responsive
+/// @exemple sass - Structure du tableau
+/// $__responsiveQuery : (
+///     sm : (
+///             query : ....,
+///             selectors : (
+///                     a.red : (
+///                             color: red,
+///                             font-size: 14,
+///                             ...
+///                      ),
+///                      .app-btn : (
+///                             background: blue,
+///                             ...
+///                     ),
+///             ),
+///             ...
+///     );
+$__responsiveQuery : (
+        my-breakpoint : (
+                query : 'screen and (max-width: 768px)',
+        )
+) !default;
