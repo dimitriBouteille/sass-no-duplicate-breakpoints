@@ -76,14 +76,22 @@
 /// @group Responsive
 /// @param {map} $currentSelectors Tableau des sélecteurs dans lequel on souhaite ajouter un nouveau sélecteur
 /// @param {string} $selector Sélecteur css
-/// @param {map} $propertys Liste des propriétés liées au sélecteur
+/// @param {map} $properties Liste des propriétés liées au sélecteur
 /// @access private
 /// @return {map}
-@function __updateSelector($currentSelectors, $selector, $propertys) {
+@function __updateSelector($currentSelectors, $selector, $properties) {
 
-  $returnSelectors : ();
-  $returnSelectors : map-merge($currentSelectors, ($selector : $propertys));
+  $propertiesOfSelector : map-get($currentSelectors, $selector);
 
+  /// Si le selecteur n'a pas encore de propriete (lors du passage dans la fonction)
+  @if $propertiesOfSelector == null {
+    $propertiesOfSelector : ()
+  }
+
+  /// On regroupe les proprietes de l'ancien selecteur avec les nouvelles proprietes
+  $propertiesOfSelector : map-merge($propertiesOfSelector, $properties);
+
+  $returnSelectors : map-merge($currentSelectors, ($selector : $propertiesOfSelector));
   @return $returnSelectors;
 }
 

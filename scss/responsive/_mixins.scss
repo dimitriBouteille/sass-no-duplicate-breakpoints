@@ -1,66 +1,33 @@
 
 /// Ajoutes des propriétés à un point de rupture.
-/// Cette mixin regroupe l'ensemble des sélecteurs dans un seul point de rupture si le paramètre $propertys est passé en paramètre
-/// Si @content est renseigné, un nouveau @media sera généré dans la feuille
+/// Cette mixin regroupe l'ensemble des sélecteurs dans un seul point de rupture
 /// @group Responsive
 /// @param {string} $breakpoint Point de rupture
-/// @param {map} $propertys [null] Liste des proprietes
+/// @param {map} $propertys Liste des proprietes a ajouter au point de rupture
 /// @example scss - Utilisation basique
 /// .foo {
 ///   color: red;
 ///   @include respondTo(mobile, (
 ///     color: yellow,
 ///   ));
-/// }
-/// @example scss - Utilisation en passent directement le contenu dans la mixin
-/// .foo {
-///   color: red;
-///   @include respondTo(mobile) {
-///     color: yellow,
-///     background-color: white,
-///     font-size: 15px,
-///   };
-/// }
-/// /!\ Si un même selector possède plusieurs fois le même point de rupture, seule le dernier point de rupture sera conservé
-/// .foo {
-///   color: red;
-///   @include respondTo(mobile, (
-///     color: yellow,
-///     font-size: 15px
-///   ));
 ///
-///   /!\ Seul ce media sera généré avec la propriété position.
-///   @include respondTo(mobile, (
-///     position: relative,
-///   ));
-/// }
-@mixin respond-to($breakpoint, $propertys : null) {
+@mixin respond-to($breakpoint, $propertys) {
 
   @if __breakpointExist($breakpoint){
 
-    @if $propertys == null { // @content selectors
+    $selector : &;
+    $breakpointData : __getBreakpointData($breakpoint);
 
-      $query : getBreakpointQuery($breakpoint);
-
-      // Genere le media
-      @media #{$query} {
-        @content;
-      }
-
-    } @else { // Propertys lists
-
-      $selector : &;
-      $breakpointData : __getBreakpointData($breakpoint);
-
-      @if map-has-key($breakpointData, selectors) == false {
-        $breakpointData : map-merge($breakpointData, (selectors : ()));
-      }
-
-      $newSelectors : __updateSelector(map-get($breakpointData, selectors), $selector, $propertys);
-      $breakpointData : map-merge($breakpointData, (selectors : $newSelectors));
-
-      $update : __updateMedia($breakpoint, $breakpointData);
+    /// Ajout de la clef selectors si la clef n'existe pas encore
+    @if map-has-key($breakpointData, selectors) == false {
+      $breakpointData : map-merge($breakpointData, (selectors : ()));
     }
+
+    $newSelectors : __updateSelector(map-get($breakpointData, selectors), $selector, $propertys);
+    $breakpointData : map-merge($breakpointData, (selectors : $newSelectors));
+
+    /// On met a jour le tableau qui contient les points de rupture avec la nouvelel liste de selecteurs/proprietes
+    $update : __updateMedia($breakpoint, $breakpointData);
   }
 }
 

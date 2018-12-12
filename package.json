@@ -1,0 +1,24 @@
+{
+  "name": "sass-no-duplicate-breakpoints",
+  "version": "1.0.0",
+  "description": "Sass no duplicate breakpoints est une librairie Sass qui permet de regrouper les points de rupture.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimitriBouteille/sass-no-duplicate-breakpoints.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimitriBouteille/sass-no-duplicate-breakpoints/issues"
+  },
+  "homepage": "https://github.com/dimitriBouteille/sass-no-duplicate-breakpoints#readme",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-sass": "^4.0.2",
+    "node-sass": "^4.11.0"
+  }
+}

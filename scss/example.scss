@@ -2,7 +2,6 @@
 // Import du plugin
 @import "responsive/import";
 
-// Utilisation de base avec une liste propriétés
 .foo{
   color: red;
 
@@ -10,35 +9,12 @@
     color: blue,
   ));
 
-  &-sub {
-
-    @include respond-to(sm, (
-      background-color: green,
-    ))
-  }
-
-  .sub-selector {
-    @include respond-to(sm, (
-          background-color: orange,
-    ))
-  }
-
-}
-.hello {
   @include respond-to(sm, (
-      background: red,
+    background: green,
+    font-size: 15px,
+    color: black,
   ));
-}
 
-// Utilisation avec @content
-.bar {
-
-  color: pink;
-
-  @include respond-to(sm){
-    color: white;
-    font-size: 16px;
-  }
 }
 
 // Chargement des points de ruptures

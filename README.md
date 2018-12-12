@@ -59,41 +59,15 @@ Si le point de rupture n'existe pas dans `$__responsiveQuery`, une erreur est le
             background: red;
         }        
     }
-    
-Dans le cas, ou un sélecteur aurait plusieurs fois un même point du rupture, seul les propriétés du dernier point de rupture seront généré. 
-
-**Exemple :**
-
-    .foo{
-      @include respond-to(md-breakpoint, (
-        color: blue,
-      ));
-      
-      @include respond-to(md-breakpoint, (
-        background: pink,
-        position: relative,
-      ));
-    }
-    
-**Généré :**
-
-    @media (my-breakpoint) {
-        .foo{
-            background: pink;
-            position: relative;
-        }        
-    }
-    
-Dans l'exemple ci-dessus, seule les propriétés `background: pink; position: relative;` seront générées. Pour éviter tout problème, utilisez un seul `respond-to()` par point de rupture et sélecteur.
-   
+  
 ### Générer les points de rupture
 
 La génération des points de rupture se fait à l'aide de la mixin `loadMediaQuery` qui peut prendre zéro, un ou plusieurs paramétres. Si 
-aucun paramètre n'est passer à la mixin, l'ensemble des points de rupture seront générés dans l'ordre des clefs qui se trouve dans `$__responsiveQuery`.
+aucun paramètre n'est passés à la mixin, l'ensemble des points de rupture seront générés dans l'ordre des clefs qui se trouve dans `$__responsiveQuery`.
 
     @include loadMediaQuery();
 
-Si vous souhaitez charger un point de rupture spécifique ou changer l'ordre de chargement des points de ruptures (ex: approche mobile first), il vous suffit de passer la liste des points de rupture à générer.
+Si vous souhaitez charger un point de rupture spécifique ou changer l'ordre de chargement des points de ruptures (ex: approche mobile first), il suffit de passer la liste des points de rupture à générer.
 Si un point de rupture n'existe pas, une erreur est levée.
 
     @include loadMediaQuery(md-breakpoint, lg-breakpoint, ...);
